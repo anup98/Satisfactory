@@ -1,11 +1,12 @@
 import json
 from item import Item
 from recipe import Recipe
-from main import REMOVELIST
+from openpyxl.utils import get_column_letter
+
 
 
 def getItems():
-    with open("scraper/data.json") as f:
+    with open("data.json") as f:
         data = json.load(f)
 
     items = data['items']
@@ -36,10 +37,7 @@ def getItems():
                 masterItems[name].recipes.append(r.name)
         
         masterRecipes[r.name] = r
-        
-        for i in REMOVELIST:
-            masterItems.pop(i)
-    
+                  
     return masterItems, masterRecipes
 
 def formulaData(r: Recipe):
@@ -50,5 +48,8 @@ def formulaData(r: Recipe):
     }
     return data
 
-
+def coord(row1, col1, row2=None, col2=None):
+    if col2 is None:
+        return get_column_letter(col1) + str(row1)
+    return get_column_letter(col1) + str(row1) + ":" + get_column_letter(col2) + str(row2)
 
